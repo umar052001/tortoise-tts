@@ -1,12 +1,12 @@
 from fastapi import FastAPI, HTTPException
+from decouple import config
 import httpx
 
 app = FastAPI()
 
-gradio_url = "https://tonic1-tortoise-tts-webui.hf.space/"
-
-# Replace with your actual API token or credentials
-gradio_api_token = "YOUR_API_TOKEN_HERE"
+# Load the Gradio API URL and key from the .env file
+gradio_url = config("GRADIO_API_URL")
+gradio_api_token = config("GRADIO_API_KEY")
 
 async def make_gradio_request(input_1: str, input_2: str, input_3: str, fn_index: int):
     """
