@@ -305,6 +305,48 @@ Tortoise was trained primarily on a dataset consisting of audiobooks. I made no 
 balance diversity in this dataset. For this reason, Tortoise will be particularly poor at generating the voices of minorities
 or of people who speak with strong accents.
 
+## FastAPI Integration and Docker Container
+
+This repository includes a FastAPI integration that allows you to access Tortoise TTS via a web API. Additionally, you can deploy this application inside a Docker container for easy deployment and scaling.
+
+### FastAPI Integration
+
+The FastAPI code in this repository enables you to interact with Tortoise TTS programmatically. It provides three main endpoints:
+
+1. `/preset-voice`: Predict text-to-speech from preset voices.
+2. `/custom-voices`: Predict text-to-speech from custom voices.
+3. `/predict-from-one-file`: Predict text-to-speech from a single audio file.
+
+You can make HTTP requests to these endpoints with the appropriate parameters to generate speech using Tortoise TTS. The FastAPI code is designed to make it easy to interact with the Tortoise TTS model via a web interface.
+
+### Docker Container
+
+We've included a Dockerfile in this repository that allows you to containerize the FastAPI application. Docker makes it simple to deploy your Tortoise TTS API to various environments.
+
+To build and run the Docker container, follow these steps:
+
+1. Ensure you have Docker installed on your system.
+
+2. Place the Dockerfile in the same directory as your FastAPI code and `requirements.txt` file.
+
+3. Open a terminal and navigate to the directory containing the Dockerfile.
+
+4. Build the Docker image using the `docker build` command (replace `my-tortoise-tts-app` with your desired image name):
+
+   ```bash
+   docker build -t my-tortoise-tts-app .
+   ```
+
+5. Once the image is built, you can run a container based on that image using the `docker run` command:
+
+   ```bash
+   docker run -p 80:80 my-tortoise-tts-app
+   ```
+
+6. Your FastAPI application with Tortoise TTS should now be running inside a Docker container, accessible on port 80 of your host machine.
+
+Make sure to adjust the Dockerfile and environment variables as needed to match your specific project setup.
+
 ## Looking forward
 
 Tortoise v2 is about as good as I think I can do in the TTS world with the resources I have access to. A phenomenon that happens when
