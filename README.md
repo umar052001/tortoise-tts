@@ -10,6 +10,8 @@ This repo contains all the code needed to run Tortoise TTS in inference mode.
 Manuscript: https://arxiv.org/abs/2305.07243
 
 ### Version history
+### v2.8; 2023/9/13
+- Added custom tokenizer for non-english models
 #### v2.7; 2023/7/26
 - Bug fixes
 - Added Apple Silicon Support
@@ -91,6 +93,38 @@ Optionally, pytorch can be installed in the base environment, so that other cond
 
 If you are on windows, you may also need to install pysoundfile: `conda install -c conda-forge pysoundfile`
 
+### Docker
+
+An easy way to hit the ground running and a good jumping off point depending on your use case.
+
+```sh
+git clone https://github.com/neonbjb/tortoise-tts.git
+cd tortoise-tts
+
+docker build . -t tts
+
+docker run --gpus all \
+    -e TORTOISE_MODELS_DIR=/models \
+    -v /mnt/user/data/tortoise_tts/models:/models \
+    -v /mnt/user/data/tortoise_tts/results:/results \
+    -v /mnt/user/data/.cache/huggingface:/root/.cache/huggingface \
+    -v /root:/work \
+    -it tts
+```
+This gives you an interactive terminal in an environment that's ready to do some tts. Now you can explore the different interfaces that tortoise exposes for tts.
+
+For example:
+
+```sh
+cd app
+conda activate tortoise
+time python tortoise/do_tts.py \
+    --output_path /results \
+    --preset ultra_fast \
+    --voice geralt \
+    --text "Time flies like an arrow; fruit flies like a bananna."
+```
+
 ## Apple Silicon
 
 On MacOS 13+ with M1/M2 chips you need to install the nighly version of pytorch, as stated in the official page you can do:
@@ -104,7 +138,7 @@ Be sure to do that after you activate the environment. If you don't use conda th
 ```shell
 python3.10 -m venv .venv
 source .venv/bin/activate
-pip install numba inflect
+pip install numba inflect psutil
 pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cpu
 pip install transformers
 git clone https://github.com/neonbjb/tortoise-tts.git
